@@ -169,8 +169,8 @@ all_sprite_list.add(bg)
 
 
 #player image and added to sprite list to be on screen
-player = Player(100, 50)
-player.image = pg.image.load("png\heya.jpg")
+player = Player(50, 50)
+player.image = pg.image.load("png\charactertest.png")
 player.walls = wall_list
 all_sprite_list.add(player)
 
