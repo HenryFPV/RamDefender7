@@ -4,24 +4,18 @@ from random import randint
 done = False
 import time
 
-aids = {
-    "I'll fuckin' do it!": 2,
-    "I'll do it!":2,
-    "I won't puss out this time!": 2,
-    "I can't take it no more.": 2
-    }
-asshole = random.randint(0,3)
-Rodeo = aids.value
+
+FUCKFUCKFUCKFUCK = ["I'll fuckin' do it!", "I'll do it!", "I won't puss out this time!", "I can't take it no more." ]
+
+
 while not done:
     f= open("nuuse.txt", "r")
     if f.mode =="r":
         contents = f.read()
 
-
         print(contents)
         print("")
-        print(Rodeo)
-        print("imma hang myself")
+        print(random.choice(FUCKFUCKFUCKFUCK))
         time.sleep(0.2)
         
 
