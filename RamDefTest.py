@@ -2,7 +2,7 @@ import pygame, time, random
 from pygame.locals import *
 import math
 from pygame.math import Vector2
-import classes
+
 
 
 pg = pygame
@@ -296,7 +296,7 @@ for i in range(10):
     mobs.add(m)
 
 #player image and added to sprite list to be on screen
-player = Player((0),640, 360 ) #start position
+player = Player((640, 360),640, 360 ) #start position
 
 
 player.walls = wall_list
