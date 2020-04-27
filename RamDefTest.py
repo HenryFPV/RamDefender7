@@ -1,12 +1,10 @@
 import pygame, time, random
 from pygame.locals import *
-clock = pg.time.Clock()
+
+
 pg = pygame
+clock = pg.time.Clock()
 pg.init()
-
-
-#introBack = pg.image.load("PNG/heya.jpg")
-
 
 BLACK           = (0, 0, 0)
 BLUE            = (50, 50, 255)
@@ -17,6 +15,7 @@ GREEN           = (0, 255, 0)
 RED             = (255, 0, 0)
 DARKRED         = (200, 0, 0)
   
+
 
 
 SCREEN_WIDTH    = 1280
@@ -30,29 +29,22 @@ halfWinWIDTH    = SCREEN_WIDTH    / 2
 screen          = pg.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
 
-#backgroundRect = introBack.get_rect()
-#def intro():
-#    intro = True
 
-#    while intro:
-#        for event in pg.event.get():
-#            if event.type == pg.QUIT:
-#                pg.quit()
-#                quit()
-        
-#        screen.blit(introBack, backgroundRect)
+def intro():
 
-#        pg.display.update()
+    intro = True
+    while intro:
+        for event in pg.event.get():
+            if event.type== pg.QUIT:
+                pg.quit()
+                quit()
 
-#        clock.tick(0)
-#        time.sleep(1)
-#        engine()
+        pg.display.update()
+
+        clock.tick(0)
 
 
-'''#
-
-
-class Player(pg.sprite.sprite):
+class Player(pg.sprite.Sprite):
     def __init__(self, x, y):
 
         super().__init__()
@@ -94,37 +86,24 @@ class Player(pg.sprite.sprite):
                 self.rect.top = block.rect.bottom
 
 
+all_sprite_list = pg.sprite.Group()
+wall_list = pg.sprite.Group()
 
 
-
-    def shoot(self):
-        #shooting code
-
-'''#
-
-#class Bullet(pg.sprite.sprite):
- #   def __init__(self, x, y):
-        #add bullet stuff
-
-
-
-#player = Player(100, 50)
-#player.image = pg.image.load("png\heya.jpg")
-#player.walls = wall_list
-#all_sprite_list.add(player)
-
+player = Player(100, 50)
+player.image = pg.image.load("png\heya.jpg")
+player.walls = wall_list
+all_sprite_list.add(player)
 
 def engine():   #main game loop 
-    #score = 0   # initializes score counter
-    done = False   #keeps the engine() running until set to True
+ 
+    done = False  
 
-    #beginning audio goes here ...
 
-    while not done:     #wgile done is not True
-
+    while not done:    
 
         for event in pg.event.get():     #ends game, can insert pg.QUIT() anywhere to end it.
-            if event.type == pg.QUIT():
+            if event.type == pg.QUIT:
                 done = True
 
 
@@ -157,18 +136,17 @@ def engine():   #main game loop
                 if event.type == pg.K_DOWN:
                     player.changespeed(0, -5)
 
+        all_sprite_list.update()
+        all_sprite_list.draw()
 
-        #all_sprite_list.update()
-        #all_sprite_list.draw()
+        pg.display.flip()
 
-        #pg.display.flip()
-
-        #clock.tick(60)
+        clock.tick(60)
 
         
 
 
 
-engine()    
+intro()    
 
 pg.quit()
