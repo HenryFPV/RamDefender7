@@ -96,7 +96,14 @@ class Player(pg.sprite.Sprite):
                 self.rect.top = block.rect.bottom
 
 
+class Background(pg.sprite.Sprite):
+    def __init__(self, image_file, location):
+        pg.sprite.Sprite.__init__(self)
 
+        self.image = pg.image.load(image_file)
+
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = location
 
 
 
@@ -105,11 +112,18 @@ all_sprite_list = pg.sprite.Group()
 wall_list = pg.sprite.Group()
 
 
-
+#player image and added to sprite list to be on screen
 player = Player(100, 50)
 player.image = pg.image.load("png\heya.jpg")
 player.walls = wall_list
 all_sprite_list.add(player)
+
+
+
+bg = Background("PNG\schizophrenic.jpg", [0, 0])
+bg.image = bg.image.load("PNG\schizophrenic.jpg")
+all_sprite_list.add(bg)
+
 
 
 
