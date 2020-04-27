@@ -16,6 +16,7 @@ while not done:
         print(contents)
         print("")
         print(random.choice(FUCKFUCKFUCKFUCK))
+        print("")
         time.sleep(0.2)
         
 
