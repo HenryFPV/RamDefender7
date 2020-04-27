@@ -16,6 +16,7 @@ RED             = (255, 0, 0)
 DARKRED         = (200, 0, 0)
   
 
+introBack = pg.image.load("PNG/heya.jpg")
 
 
 SCREEN_WIDTH    = 1280
@@ -30,6 +31,7 @@ screen          = pg.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
 
 
+backgroundRect = introBack.get_rect()
 def intro():
 
     intro = True
@@ -39,9 +41,14 @@ def intro():
                 pg.quit()
                 quit()
 
+
+        screen.blit(introBack, backgroundRect)
         pg.display.update()
 
         clock.tick(0)
+
+
+
 
 
 class Player(pg.sprite.Sprite):
@@ -86,14 +93,24 @@ class Player(pg.sprite.Sprite):
                 self.rect.top = block.rect.bottom
 
 
+
+
+
+
+
 all_sprite_list = pg.sprite.Group()
 wall_list = pg.sprite.Group()
+
 
 
 player = Player(100, 50)
 player.image = pg.image.load("png\heya.jpg")
 player.walls = wall_list
 all_sprite_list.add(player)
+
+
+
+
 
 def engine():   #main game loop 
  
