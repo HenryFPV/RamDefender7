@@ -1,11 +1,11 @@
 import pygame, time, random
-from pygame.local import *
+#from pygame.local import *
 
 pg = pygame
 pg.init()
 
 
-
+introBack = pg.image.load("PNG/heya.jpg")
 
 
 BLACK           = (0, 0, 0)
@@ -15,23 +15,36 @@ BRIGHTGREEN     = (34,139,34)
 GREEN           = (0, 255, 0)
 
 RED             = (255, 0, 0)
-DARKRED         = 200, 0, 0)
+DARKRED         = (200, 0, 0)
   
 
 
-SCREEN_WIDTH    = 1000
-SCREEN_HEIGHT   = 1000
+SCREEN_WIDTH    = 1280
+SCREEN_HEIGHT   = 720
 
 
 
 halfWinHeight   = SCREEN_HEIGHT   / 2
 halfWinWIDTH    = SCREEN_WIDTH    / 2
 
+screen          = pg.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
 
+#backgroundRect = introBack.get_rect()
+def intro():
+    intro = True
 
+    while intro:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                quit()
+        
+        #screen.blit(introBack, backgroundRect)
 
+        pg.display.update()
 
+        clock.tick(0)
 
 
 
