@@ -1,7 +1,7 @@
 import pygame, time, random
 from pygame.locals import *
 import math
-
+from pygame.math import Vector2
 
 
 
@@ -107,24 +107,57 @@ def intro():
 
 
 
+class Mob(pg.sprite.Sprite):
 
+    def __init__(self):
+        super(Mob, self).__init__()
+
+        self.image = pygame.Surface((60, 1000))
+        self.image = pg.image.load("png\mob1.png")
+        self.image = pg.transform.scale(self.image, [60, 100])
+
+
+
+        self.rect = self.image.get_rect()
+        self.rect.x = 900
+        self.rect.y = 500
+        
+        
+        self.rect.x = random.randrange(899, 1000)
+        self.rect.y = random.randrange(40, 550)        
+
+        self.speedx = random.randrange(-5, -2)
+
+    def update(self):
+        self.rect.x += self.speedx
+
+        if self.rect.top > self.rect.left < -60 or self.rect.right > SCREEN_WIDTH + 60:
+            self.rect.x = random.randrange(899, 1000)
+            self.rect.y = random.randrange(40, 550)
+            self.speedy = random.randrange(-7, -5)
 
 
 
 
 class Player(pg.sprite.Sprite):
 
-    def __init__(self, x, y):
+    def __init__(self, pos, x, y ):##############
 
         super().__init__()
 
         self.image = pg.Surface([56, 79])
+        self.image = pg.image.load("png\chartest2.png")
+        self.orig_image = self.image
+
+
         self.rect = self.image.get_rect()
+
         self.rect.y = y
         self.rect.x = x
         self.change_x = 0
         self.change_y = 0
         self.walls = None
+        self.pos = Vector2(pos)
 
     def changespeed(self, x, y):
 
@@ -132,6 +165,7 @@ class Player(pg.sprite.Sprite):
         self.change_y += y
 
     def update(self):
+        self.rotate()
 
         self.rect.x += self.change_x
 
@@ -156,8 +190,19 @@ class Player(pg.sprite.Sprite):
 
             else:
                 self.rect.top = block.rect.bottom
+
+
     
-    
+    def rotate(self):
+        # The vector to the target (the mouse position).
+        direction = pg.mouse.get_pos() - self.pos
+        # .as_polar gives you the polar coordinates of the vector,
+        # i.e. the radius (distance to the target) and the angle.
+        radius, angle = direction.as_polar()
+        # Rotate the image by the negative angle (y-axis in pygame is flipped).
+        self.image = pg.transform.rotate(self.orig_image, -angle)
+        # Create a new rect with the center of the old rect.
+        self.rect = self.image.get_rect(center=self.rect.center)
     
 
     def shoot(self):
@@ -216,6 +261,8 @@ class Wall(pg.sprite.Sprite):
 all_sprite_list = pg.sprite.Group()
 wall_list = pg.sprite.Group()
 bullets = pg.sprite.Group()
+mobs = pg.sprite.Group()
+
 
 
 
@@ -243,12 +290,15 @@ wall_list.add(wall)
 all_sprite_list.add(wall)
 
 
-
+for i in range(10):
+    m = Mob()
+    all_sprite_list.add(m)
+    mobs.add(m)
 
 #player image and added to sprite list to be on screen
-player = Player(640, 360) #start position
+player = Player((0),640, 360 ) #start position
 
-player.image = pg.image.load("png\chartest2.png")
+
 player.walls = wall_list
 all_sprite_list.add(player)
 
