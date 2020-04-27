@@ -162,7 +162,7 @@ class Player(pg.sprite.Sprite):
 
     def shoot(self):
 
-        bullet = Bullet(self.rect.centerx + 10, self.rect.bottom +1) #where it comes out
+        bullet = Bullet(self.rect.centerx +30 , self.rect.bottom -53) #where it comes out
         all_sprite_list.add(bullet)
         bullets.add(bullet)
 
@@ -248,7 +248,7 @@ all_sprite_list.add(wall)
 #player image and added to sprite list to be on screen
 player = Player(640, 360) #start position
 
-player.image = pg.image.load("png\chartest.png")
+player.image = pg.image.load("png\chartest2.png")
 player.walls = wall_list
 all_sprite_list.add(player)
 
