@@ -31,7 +31,7 @@ screen          = pg.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
 
 
-backgroundRect = introBack.get_rect()
+#backgroundRect = introBack.get_rect()
 def intro():
 
     intro = True
@@ -42,7 +42,8 @@ def intro():
                 quit()
 
 
-        screen.blit(introBack, backgroundRect)
+        #screen.blit(introBack, backgroundRect)
+        screen.blit(pg.Color.r)
         pg.display.update()
 
         clock.tick(0)
