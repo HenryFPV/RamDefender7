@@ -289,7 +289,7 @@ def engine():   #main game loop
 
                 elif event.key == pygame.K_SPACE:
 
-                    music('MP3\GunShotSound.mp3')
+                    music('MP3\GunShotSound-v3.wav')
                     playSound()
 
                     player.shoot()
@@ -309,7 +309,7 @@ def engine():   #main game loop
                 if event.key == pg.K_DOWN:
                     player.changespeed(0, -5)
 
-        all_sprite_list.draw(screen)
+        all_sprite_list.update()
         all_sprite_list.draw(screen)
 
         pg.display.flip()
