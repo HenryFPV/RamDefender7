@@ -2,7 +2,7 @@ import pygame, time, random
 from pygame.locals import *
 import math
 from pygame.math import Vector2
-
+import classes
 
 
 pg = pygame
@@ -112,19 +112,19 @@ class Mob(pg.sprite.Sprite):
     def __init__(self):
         super(Mob, self).__init__()
 
-        self.image = pygame.Surface((60, 1000))
-        self.image = pg.image.load("png\mob1.png")
-        self.image = pg.transform.scale(self.image, [60, 100])
+        self.image = pygame.Surface((90, 53))
+        self.image = pg.image.load("png\mob.png")
+        self.image = pg.transform.scale(self.image, [90, 53])
 
 
 
         self.rect = self.image.get_rect()
-        self.rect.x = 900
-        self.rect.y = 500
+        #self.rect.x = 1280
+        #self.rect.y = 720
         
         
-        self.rect.x = random.randrange(899, 1000)
-        self.rect.y = random.randrange(40, 550)        
+        self.rect.x = random.randrange(1280, 1500)
+        self.rect.y = random.randrange(20, 720)        
 
         self.speedx = random.randrange(-5, -2)
 
@@ -132,8 +132,8 @@ class Mob(pg.sprite.Sprite):
         self.rect.x += self.speedx
 
         if self.rect.top > self.rect.left < -60 or self.rect.right > SCREEN_WIDTH + 60:
-            self.rect.x = random.randrange(899, 1000)
-            self.rect.y = random.randrange(40, 550)
+            self.rect.x = random.randrange(1200, 1280)
+            self.rect.y = random.randrange(20, 710)
             self.speedy = random.randrange(-7, -5)
 
 
