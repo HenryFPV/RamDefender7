@@ -1,10 +1,10 @@
-import pygame 
+import pygame as pg
 from pygame.math import Vector2
-pg = pygame 
+
 
 class Player(pg.sprite.Sprite):
 
-    def __init__(self, pos, x, y):
+    def __init__(self, pos):
         super().__init__()
         self.image = pg.Surface((50, 30), pg.SRCALPHA)
         pg.draw.polygon(self.image, pg.Color('steelblue2'),
@@ -12,38 +12,9 @@ class Player(pg.sprite.Sprite):
         self.orig_image = self.image  # Store a reference to the original.
         self.rect = self.image.get_rect(center=pos)
         self.pos = Vector2(pos)
-        self.rect.y = y
-        self.rect.x = x
-        self.change_x = 0
-        self.change_y = 0
-        self.walls = None
-
-    def changespeed(self, x, y):
-        self.change_x += x
-        self.change_y += y
 
     def update(self):
         self.rotate()
-        self.rect.x += self.change_x
-     
-        block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
-        for block in block_hit_list:
-
-            if self.change_x > 0:
-                self.rect.right = block.rect.left
-
-            else:
-                self.rect.left = block.rect.right
-
-        self.rect.y += self.change_y
-
-        block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
-        for block in block_hit_list:
-            if self.change_y > 0:
-                self.rect.bottom = block.rect.top
-            else:
-                self.rect.top = block.rect.bottom
-    
 
     def rotate(self):
         # The vector to the target (the mouse position).
@@ -60,21 +31,7 @@ class Player(pg.sprite.Sprite):
 pg.init()
 screen = pg.display.set_mode((640, 480))
 clock = pg.time.Clock()
-
-
-
-all_sprite_list = pg.sprite.Group()
-
-player = Player((300, 220,), 20, 20)
-
-all_sprite_list.add(player)
-
-
-
-
-
-
-
+all_sprites = pg.sprite.Group(Player((300, 220)))
 done = False
 
 while not done:
@@ -82,45 +39,9 @@ while not done:
         if event.type == pg.QUIT:
             done = True
 
-        elif event.type == pg.KEYDOWN:
-
-            if event.key == pg.K_LEFT:
-                    player.changespeed(-5, 0)
-
-            if event.key == pg.K_RIGHT:
-                    player.changespeed(5, 0)
-
-            if event.key == pg.K_UP:
-                    player.changespeed(0, -5)
-
-            if event.key == pg.K_DOWN:
-                    player.changespeed(0, 5)
-
-            elif event.key == pygame.K_SPACE:
-
-                    music('MP3\GunShotSound.mp3')
-                    playSound()
-
-                    player.shoot()
-
-
-        elif event.type == pg.KEYUP:
-
-            if event.key == pg.K_LEFT:
-                    player.changespeed(5, 0)
-
-            if event.key == pg.K_RIGHT:
-                    player.changespeed(-5, 0)
-
-            if event.key == pg.K_UP:
-                    player.changespeed(0, 5)
-
-            if event.key == pg.K_DOWN:
-                    player.changespeed(0, -5)
-
-    all_sprite_list.draw(screen)
+    all_sprites.update()
     screen.fill((30, 30, 30))
-    all_sprite_list.draw(screen)
+    all_sprites.draw(screen)
 
     pg.display.flip()
     clock.tick(30)

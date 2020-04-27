@@ -113,29 +113,30 @@ def intro():
 
 
 class Player(pg.sprite.Sprite):
-    def __init__(self, x, y,):
+
+    def __init__(self, x, y):
 
         super().__init__()
 
-        self.image = pg.Surface([20, 20]) #player hitbox
-        self.rect  = self.image.get_rect()
+        self.image = pg.Surface([56, 79])
+        self.rect = self.image.get_rect()
         self.rect.y = y
         self.rect.x = x
         self.change_x = 0
         self.change_y = 0
         self.walls = None
- 
-
 
     def changespeed(self, x, y):
+
         self.change_x += x
         self.change_y += y
 
-
     def update(self):
+
         self.rect.x += self.change_x
-     
+
         block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
+
         for block in block_hit_list:
 
             if self.change_x > 0:
@@ -149,8 +150,10 @@ class Player(pg.sprite.Sprite):
         block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
 
         for block in block_hit_list:
+
             if self.change_y > 0:
                 self.rect.bottom = block.rect.top
+
             else:
                 self.rect.top = block.rect.bottom
     
