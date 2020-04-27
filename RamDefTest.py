@@ -1,10 +1,14 @@
 import pygame, time, random
 from pygame.locals import *
+import math
+
+
 
 
 pg = pygame
 clock = pg.time.Clock()
-pg.init()
+
+music = pg.mixer.music.load
 
 BLACK           = (0, 0, 0)
 BLUE            = (50, 50, 255)
@@ -43,7 +47,8 @@ def text_objects2(text, font):
     textSurface = font.render(text, True, GREEN)
     return textSurface, textSurface.get_rect()
 
-
+def playSound():
+    pg.mixer.music.play()
 
 def button(msg, x, y, w, h, iv, av, action=None):
     mouse = pg.mouse.get_pos()
@@ -105,8 +110,10 @@ def intro():
 
 
 
+
+
 class Player(pg.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y,):
 
         super().__init__()
 
@@ -117,7 +124,7 @@ class Player(pg.sprite.Sprite):
         self.change_x = 0
         self.change_y = 0
         self.walls = None
-
+ 
 
 
     def changespeed(self, x, y):
@@ -127,9 +134,8 @@ class Player(pg.sprite.Sprite):
 
     def update(self):
         self.rect.x += self.change_x
-
+     
         block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
-
         for block in block_hit_list:
 
             if self.change_x > 0:
@@ -147,6 +153,36 @@ class Player(pg.sprite.Sprite):
                 self.rect.bottom = block.rect.top
             else:
                 self.rect.top = block.rect.bottom
+    
+    
+    
+
+    def shoot(self):
+
+        bullet = Bullet(self.rect.centerx + 10, self.rect.bottom +1) #where it comes out
+        all_sprite_list.add(bullet)
+        bullets.add(bullet)
+
+    
+
+class Bullet(pg.sprite.Sprite):
+
+    def __init__(self, x, y):
+        pg.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((30, 30))
+        self.image = pg.image.load("PNG\BULLET.png")
+        self.rect = self.image.get_rect()
+        self.rect.bottom = y
+        self.rect.centerx = x
+        self.speedy = 10
+
+    def update(self):
+        self.rect.x += self.speedy #what direction it shoots
+
+        if self.rect.bottom < 0:
+            self.kill()
+
+
 
 
 class Background(pg.sprite.Sprite):
@@ -176,6 +212,7 @@ class Wall(pg.sprite.Sprite):
 #sprite lists
 all_sprite_list = pg.sprite.Group()
 wall_list = pg.sprite.Group()
+bullets = pg.sprite.Group()
 
 
 
@@ -207,6 +244,7 @@ all_sprite_list.add(wall)
 
 #player image and added to sprite list to be on screen
 player = Player(640, 360) #start position
+
 player.image = pg.image.load("png\chartest.png")
 player.walls = wall_list
 all_sprite_list.add(player)
@@ -218,7 +256,7 @@ all_sprite_list.add(player)
 
 
 
-
+pg.init()
 
 def engine():   #main game loop 
  
@@ -246,6 +284,13 @@ def engine():   #main game loop
                 if event.key == pg.K_DOWN:
                     player.changespeed(0, 5)
 
+                elif event.key == pygame.K_SPACE:
+
+                    music('MP3\GunShotSound.mp3')
+                    playSound()
+
+                    player.shoot()
+
 
             elif event.type == pg.KEYUP:
 
@@ -261,7 +306,7 @@ def engine():   #main game loop
                 if event.key == pg.K_DOWN:
                     player.changespeed(0, -5)
 
-        all_sprite_list.update()
+        all_sprite_list.draw(screen)
         all_sprite_list.draw(screen)
 
         pg.display.flip()
