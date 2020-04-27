@@ -110,7 +110,7 @@ class Player(pg.sprite.Sprite):
 
         super().__init__()
 
-        self.image = pg.Surface([100,50]) #player hitbox
+        self.image = pg.Surface([20, 20]) #player hitbox
         self.rect  = self.image.get_rect()
         self.rect.y = y
         self.rect.x = x
@@ -131,8 +131,10 @@ class Player(pg.sprite.Sprite):
         block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
 
         for block in block_hit_list:
+
             if self.change_x > 0:
-                self.rect.right = block.rect.Left
+                self.rect.right = block.rect.left
+
             else:
                 self.rect.left = block.rect.right
 
@@ -158,19 +160,54 @@ class Background(pg.sprite.Sprite):
 
 
 
+class Wall(pg.sprite.Sprite):
 
+    def __init__(self, x, y, width, height):
+        super().__init__()
+
+        self.image = pg.Surface([width, height])
+        self.image.fill(GREEN)
+
+        self.rect = self.image.get_rect()
+        self.rect.y = y
+        self.rect.x = x
+
+
+#sprite lists
 all_sprite_list = pg.sprite.Group()
 wall_list = pg.sprite.Group()
 
-bg = Background("png\schizophrenic.jpg", [0, 0])
-bg.image = pg.image.load("png\schizophrenic.jpg")
+
+
+#bachground image
+bg = Background("png\sgtest.png", [0, 0])
+bg.image = pg.image.load("png\sgtest.png")
 all_sprite_list.add(bg)
+
+#wall boundaries
+#1
+wall = Wall(0, 720, 1280, 0)
+wall_list.add(wall)
+all_sprite_list.add(wall)
+#2
+wall = Wall(0, 0, 1280, 0)
+wall_list.add(wall)
+all_sprite_list.add(wall)
+#3
+wall = Wall(1280, 0, 0, 720)
+wall_list.add(wall)
+all_sprite_list.add(wall)
+#4
+wall = Wall(0, 0, 0, 720)
+wall_list.add(wall)
+all_sprite_list.add(wall)
+
 
 
 
 #player image and added to sprite list to be on screen
-player = Player(50, 50)
-player.image = pg.image.load("png\charactertest.png")
+player = Player(640, 360) #start position
+player.image = pg.image.load("png\chartest.png")
 player.walls = wall_list
 all_sprite_list.add(player)
 
