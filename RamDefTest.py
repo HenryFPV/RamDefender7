@@ -16,7 +16,7 @@ RED             = (255, 0, 0)
 DARKRED         = (200, 0, 0)
   
 
-introBack = pg.image.load("PNG/heya.jpg")
+introBack = pg.image.load("PNG/cursed.jpg")
 
 
 SCREEN_WIDTH    = 1280
@@ -31,7 +31,7 @@ screen          = pg.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
 
 
-#backgroundRect = introBack.get_rect()
+backgroundRect = introBack.get_rect()
 def intro():
 
     intro = True
@@ -42,8 +42,8 @@ def intro():
                 quit()
 
 
-        #screen.blit(introBack, backgroundRect)
-        screen.blit(pg.Color.r)
+        screen.blit(introBack, backgroundRect)
+
         pg.display.update()
 
         clock.tick(0)
@@ -107,7 +107,7 @@ wall_list = pg.sprite.Group()
 
 
 player = Player(100, 50)
-#player.image = pg.image.load("png\heya.jpg")
+player.image = pg.image.load("png\heya.jpg")
 player.walls = wall_list
 all_sprite_list.add(player)
 
@@ -129,31 +129,31 @@ def engine():   #main game loop
 
             elif event.type == pg.KEYDOWN:
 
-                if event.type == pg.K_LEFT:
+                if event.key == pg.K_LEFT:
                     player.changespeed(-5, 0)
 
-                if event.type == pg.K_RIGHT:
+                if event.key == pg.K_RIGHT:
                     player.changespeed(5, 0)
 
-                if event.type == pg.K_UP:
+                if event.key == pg.K_UP:
                     player.changespeed(0, -5)
 
-                if event.type == pg.K_DOWN:
+                if event.key == pg.K_DOWN:
                     player.changespeed(0, 5)
 
 
             elif event.type == pg.KEYUP:
 
-                if event.type == pg.K_LEFT:
+                if event.key == pg.K_LEFT:
                     player.changespeed(5, 0)
 
-                if event.type == pg.K_RIGHT:
+                if event.key == pg.K_RIGHT:
                     player.changespeed(-5, 0)
 
-                if event.type == pg.K_UP:
+                if event.key == pg.K_UP:
                     player.changespeed(0, 5)
 
-                if event.type == pg.K_DOWN:
+                if event.key == pg.K_DOWN:
                     player.changespeed(0, -5)
 
         all_sprite_list.update()
