@@ -8,18 +8,24 @@ pg.init()
 
 
 
-BLACK = (0, 0, 0)
-BLUE = (50, 50, 255)
-BRIGHTGREEN = (34,139,34)
-RED = (255, 0, 0)
-DARKRED = (200, 0, 0)
-GREEN = (0, 255, 0)
+BLACK           = (0, 0, 0)
+BLUE            = (50, 50, 255)
+
+BRIGHTGREEN     = (34,139,34)
+GREEN           = (0, 255, 0)
+
+RED             = (255, 0, 0)
+DARKRED         = 200, 0, 0)
+  
+
+
+SCREEN_WIDTH    = 1000
+SCREEN_HEIGHT   = 1000
 
 
 
-
-
-
+halfWinHeight   = SCREEN_HEIGHT   / 2
+halfWinWIDTH    = SCREEN_WIDTH    / 2
 
 
 
