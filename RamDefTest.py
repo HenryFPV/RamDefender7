@@ -93,15 +93,13 @@ def intro():
 
 
         screen.blit(introBack, backgroundRect)
-        #360, vahe 400
+
         button("Start", 340, 475, 200, 50, GREEN, BLUE, "restart")
         button("Quit", 640, 475, 200, 50, RED, BLUE, "quit")
-
 
         pg.display.update()
         clock.tick(0)
 
-        #engine()
 
 
 
