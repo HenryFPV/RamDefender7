@@ -111,6 +111,11 @@ class Background(pg.sprite.Sprite):
 all_sprite_list = pg.sprite.Group()
 wall_list = pg.sprite.Group()
 
+bg = Background("png\schizophrenic.jpg", [0, 0])
+bg.image = pg.image.load("png\schizophrenic.jpg")
+all_sprite_list.add(bg)
+
+
 
 #player image and added to sprite list to be on screen
 player = Player(100, 50)
@@ -120,9 +125,7 @@ all_sprite_list.add(player)
 
 
 
-bg = Background("PNG\schizophrenic.jpg", [0, 0])
-bg.image = bg.image.load("PNG\schizophrenic.jpg")
-all_sprite_list.add(bg)
+
 
 
 
