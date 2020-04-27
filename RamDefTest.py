@@ -16,7 +16,7 @@ RED             = (255, 0, 0)
 DARKRED         = (200, 0, 0)
   
 
-introBack = pg.image.load("PNG/cursed.jpg")
+introBack = pg.image.load("PNG/intro.png")
 
 
 SCREEN_WIDTH    = 1280
@@ -30,6 +30,56 @@ halfWinWIDTH    = SCREEN_WIDTH    / 2
 screen          = pg.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
 
+def text_objects0(text, font):
+    textSurface = font.render(text, True, BLACK)
+    return textSurface, textSurface.get_rect()
+
+def text_objects1(text, font):
+    textSurface = font.render(text, True, BLUE)
+    return textSurface, textSurface.get_rect()
+
+
+def text_objects2(text, font):
+    textSurface = font.render(text, True, GREEN)
+    return textSurface, textSurface.get_rect()
+
+
+
+def button(msg, x, y, w, h, iv, av, action=None):
+    mouse = pg.mouse.get_pos()
+    click = pg.mouse.get_pressed()
+
+    if x + w > mouse[0] > x and y + h > mouse[1] > y:
+        pg.draw.rect(screen, av, (x, y, w, h))
+
+        if click[0] == 1 and action != None:
+            if action == "quit": # quit
+                #end sound
+                #button click too
+                pg.quit()
+                quit
+
+            elif action == "restart":
+                #button click
+                engine()
+
+            #elif action == "next":
+                #button click
+                #tutorial goes as ()
+            #elif action == "skip_Tutorial":
+                #button click
+                #skips tutorial as ()
+
+    else:
+        pg.draw.rect(screen, iv, (x, y, w, h))
+        smallText = pg.font.Font("freesansbold.ttf", 25)
+
+        textSurf, textRect = text_objects0(msg, smallText)
+        textRect.center = ((x + (w / 2)), (y + (h / 2)))
+
+        screen.blit(textSurf, textRect)
+
+
 
 backgroundRect = introBack.get_rect()
 def intro():
@@ -37,18 +87,21 @@ def intro():
     intro = True
     while intro:
         for event in pg.event.get():
-            if event.type== pg.QUIT:
+            if event.type == pg.QUIT:
                 pg.quit()
                 quit()
 
 
         screen.blit(introBack, backgroundRect)
+        #360, vahe 400
+        button("Start", 340, 475, 200, 50, GREEN, BLUE, "restart")
+        button("Quit", 640, 475, 200, 50, RED, BLUE, "quit")
+
 
         pg.display.update()
-
         clock.tick(0)
-        time.sleep(1)
-        engine()
+
+        #engine()
 
 
 
