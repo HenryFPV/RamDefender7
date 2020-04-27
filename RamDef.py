@@ -1,9 +1,9 @@
 import pygame, time, random
 from pygame.locals import *
-clock = pg.time.Clock()
+
 pg = pygame
 pg.init()
-
+clock = pg.time.Clock()
 
 #introBack = pg.image.load("PNG/heya.jpg")
 

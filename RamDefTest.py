@@ -46,6 +46,8 @@ def intro():
         pg.display.update()
 
         clock.tick(0)
+        time.sleep(1)
+        engine()
 
 
 
@@ -74,7 +76,7 @@ class Player(pg.sprite.Sprite):
     def update(self):
         self.rect.x += self.change_x
 
-        block_hit_list = pg.spritecollide(self, self.walls, False)
+        block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
 
         for block in block_hit_list:
             if self.change_x > 0:
@@ -84,7 +86,7 @@ class Player(pg.sprite.Sprite):
 
         self.rect.y += self.change_y
 
-        block_hit_list = pg.spritecollide(self, self.walls, False)
+        block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
 
         for block in block_hit_list:
             if self.change_y > 0:
@@ -104,7 +106,7 @@ wall_list = pg.sprite.Group()
 
 
 player = Player(100, 50)
-player.image = pg.image.load("png\heya.jpg")
+#player.image = pg.image.load("png\heya.jpg")
 player.walls = wall_list
 all_sprite_list.add(player)
 
@@ -154,7 +156,7 @@ def engine():   #main game loop
                     player.changespeed(0, -5)
 
         all_sprite_list.update()
-        all_sprite_list.draw()
+        all_sprite_list.draw(screen)
 
         pg.display.flip()
 
