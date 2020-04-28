@@ -21,7 +21,7 @@ backgroundRect = introt.get_rect()
 
 #music shortcuts
 musica = pg.mixer.music.load
-mainsound = pg.mixer.Sound('MP3\dote.wav')
+mainsound = pg.mixer.Sound('MP3\Ramt.wav')
 
 #colours
 BLACK = (0, 0, 0)
@@ -153,7 +153,7 @@ def keskmine():   #tutorial screen
 
         time.sleep(1)
 
-        musica('sound\woman mad.wav')
+        musica('MP3\sleepover.mp3')
         music_on()
 
         time.sleep(4)
