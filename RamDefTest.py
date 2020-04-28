@@ -417,9 +417,6 @@ def engine():   #main game loop
                 all_sprite_list.add(bullet)
                 bullet_list.add(bullet)
 
-
-
-
             #if event.type == pg.KEYDOWN:
 
             #    if event.key == pygame.K_SPACE:

@@ -2,13 +2,15 @@ import pygame, time, random
 from pygame.locals import *
 
 
-#change mob spawn locations, hitboxes, images, sound
+#change mob spawn locations, hitboxes, sound
 
 
 
 pg = pygame
 pg.init()
 
+
+#loads images for screens
 pg.display.set_caption('Defence')
 introt = pg.image.load("png/intro.png")
 loppt = pg.image.load("png/sgtest.png")
@@ -16,10 +18,12 @@ ladu = pg.image.load("png/sgtest.png")
 voitekr = pg.image.load("png/sgtest.png")
 
 backgroundRect = introt.get_rect()
+
+#music shortcuts
 musica = pg.mixer.music.load
-peaheli = pg.mixer.Sound('MP3\dote.wav')
+mainsound = pg.mixer.Sound('MP3\dote.wav')
 
-
+#colours
 BLACK = (0, 0, 0)
 BLUE = (50, 50, 255)
 BRIGHTGREEN = (34,139,34)
@@ -27,18 +31,22 @@ RED = (255, 0, 0)
 DARKRED = (200, 0, 0)
 GREEN = (0, 255, 0)
 
+#specify screen dimensions
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 
+# specify half-screen timensions
 halfWinHeight = SCREEN_HEIGHT / 2
 halfWinWIDTH = SCREEN_WIDTH / 2
 
+#screen pfft
 screen = pg.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
-
+#defines music starting, when called
 def music_on():
     pg.mixer.music.play()
 
+#defines text objects with random numbers because i liked them
 def text_objects2(text, font):
     textSurface = font.render(text, True, BLACK)
     return textSurface, textSurface.get_rect()
@@ -48,7 +56,7 @@ def text_objects4(text, font):
     textSurface = font.render(text, True, BLUE)
     return textSurface, textSurface.get_rect()
 
-
+#defines buttons and their actions
 def button(msg, x, y, w, h, iv, av, action=None):
     mouse = pg.mouse.get_pos()
     click = pg.mouse.get_pressed()
@@ -91,7 +99,7 @@ def button(msg, x, y, w, h, iv, av, action=None):
         screen.blit(textSurf, textRect)
 
 
-def intro():
+def intro():   #intro screen
     intro = True
 
     musica('MP3\intro.wav')
@@ -115,7 +123,7 @@ def intro():
         clock.tick(0)
 
 
-def keskmine():
+def keskmine():   #tutorial screen
     keskmine = True
 
     while keskmine:
@@ -153,8 +161,11 @@ def keskmine():
         clock.tick(0)
 
         engine()
-########################################################
-def winn():
+
+
+
+
+def winn():   #win screen 
     winn = True
     
     musica('MP3\end.wav')
@@ -182,9 +193,9 @@ def winn():
         pg.display.update()
 
         clock.tick(0)
-########################################################
 
-def outro():
+
+def outro(): #death screen
     outro = True
     musica('MP3\literaldeath.wav')
     music_on()
@@ -208,7 +219,7 @@ def outro():
 
         clock.tick(0)
 
-
+#creating our background class
 class Background(pg.sprite.Sprite):
 
     def __init__(self, image_file, location):
@@ -219,7 +230,7 @@ class Background(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
-
+#creates our score, size, text and everything
 def score(surf, text, size, x, y):
     largeText = pg.font.Font('freesansbold.ttf', size)
     textSurf = largeText.render(text, True, RED)
@@ -228,11 +239,11 @@ def score(surf, text, size, x, y):
 
     surf.blit(textSurf, textRect)
 
-
+#creates player class
 class Player(pg.sprite.Sprite):
 
-    def __init__(self, x, y):
-
+    def __init__(self, x, y):  #initializes player class
+        
         super().__init__()
 
         self.image = pg.Surface([56, 79])
@@ -243,12 +254,12 @@ class Player(pg.sprite.Sprite):
         self.change_y = 0
         self.walls = None
 
-    def changespeed(self, x, y):
+    def changespeed(self, x, y): #defines player change speed functions
 
         self.change_x += x
         self.change_y += y
 
-    def update(self):
+    def update(self): #defines updates so that it wont get stuck after first loop and hitboxes
 
         self.rect.x += self.change_x
 
@@ -274,13 +285,13 @@ class Player(pg.sprite.Sprite):
             else:
                 self.rect.top = block.rect.bottom
 
-    def shoot(self):
+    def shoot(self): #shoots bullets
 
         bullet = Bullet(self.rect.centerx, self.rect.bottom - 25)
         all_sprite_list.add(bullet)
         bullets.add(bullet)
-
-class Bullet(pg.sprite.Sprite):
+ 
+class Bullet(pg.sprite.Sprite): #creates bullet class
 
     def __init__(self, x, y):
         pg.sprite.Sprite.__init__(self)
@@ -294,12 +305,12 @@ class Bullet(pg.sprite.Sprite):
     def update(self):
         self.rect.x += self.speedy
 
-        if self.rect.bottom < 0:
+        if self.rect.bottom < 0: #kills if gets out of bounds
             self.kill()
 
 
 
-class Mob(pg.sprite.Sprite):
+class Mob(pg.sprite.Sprite): #creates mob class
 
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
@@ -318,7 +329,7 @@ class Mob(pg.sprite.Sprite):
 
         self.speedx = random.randrange(-5, -2)
 
-    def update(self):
+    def update(self): #movement and spawn locations
         self.rect.x += self.speedx
 
         if self.rect.top > self.rect.left < -60 or self.rect.right > SCREEN_WIDTH + 60:
@@ -327,7 +338,7 @@ class Mob(pg.sprite.Sprite):
             self.speedy = random.randrange(-7, -5)
 
 
-class Wall(pg.sprite.Sprite):
+class Wall(pg.sprite.Sprite): #creates our wall class for player to not get out
 
     def __init__(self, x, y, width, height):
         super().__init__()
@@ -339,17 +350,18 @@ class Wall(pg.sprite.Sprite):
         self.rect.y = y
         self.rect.x = x
 
-
+#sprites lists
 all_sprite_list = pg.sprite.Group()
 mobs = pg.sprite.Group()
 bullets = pg.sprite.Group()
 wall_list = pg.sprite.Group()
 
+#background image when playing
 bg = Background("png\sgtest.png", [0, 0])
 bg.image = pg.image.load("png\sgtest.png")
 all_sprite_list.add(bg)
 
-
+#init player sprite
 player = Player(10, 150)
 player.image = pg.image.load("png\chartest2.png")
 player.walls = wall_list
@@ -372,6 +384,7 @@ wall = Wall(0, 0, 0, 720)
 wall_list.add(wall)
 all_sprite_list.add(wall)
 
+#spawns mobs in
 for i in range(10):
     m = Mob()
     all_sprite_list.add(m)
@@ -381,21 +394,17 @@ all_sprite_list.add(player)
 
 clock = pg.time.Clock()
 
-
+#maingame loop
 def engine():
     skoor = 0
     done = False
-    pg.mixer.Sound.play(peaheli)
+    pg.mixer.Sound.play(mainsound)
     
-
     while not done:
-
-    
 
         for event in pg.event.get():
 
             if event.type == pg.QUIT:
-
                 done = True
 
             elif event.type == pg.KEYDOWN:
@@ -416,7 +425,6 @@ def engine():
 
                     musica('MP3\sara.wav')
                     music_on()
-
                     player.shoot()
 
             elif event.type == pg.KEYUP:
@@ -434,9 +442,9 @@ def engine():
 
         all_sprite_list.update()
 
-        pihtas = pygame.sprite.groupcollide(mobs, bullets, True, True)
+        hitted = pygame.sprite.groupcollide(mobs, bullets, True, True)
 
-        for piht in pihtas:
+        for hitte in hitted:
             musica('MP3\sike.wav')
             music_on()
 
@@ -447,14 +455,14 @@ def engine():
             mobs.add(m)
 
 
-        kadunud = pg.sprite.spritecollide(player, mobs, False)
+        mobdead = pg.sprite.spritecollide(player, mobs, False)
 
-        if kadunud:
+        if mobdead:
             musica('MP3\died.wav')
             music_on()
 
             time.sleep(1.2)
-            pg.mixer.Sound.stop(peaheli)
+            pg.mixer.Sound.stop(mainsound)
             outro()
 
         all_sprite_list.draw(screen)
@@ -465,15 +473,9 @@ def engine():
 
         clock.tick(60)
         if skoor == 15:
-            pg.mixer.Sound.stop(peaheli)
+            pg.mixer.Sound.stop(mainsound)
             winn()
             
-        
-
-#   if str(skoor) == 15:
-#       winn()
-#      done = True
 
 intro()
-
 pg.quit()
