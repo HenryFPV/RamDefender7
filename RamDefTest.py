@@ -142,12 +142,14 @@ class Mob(pygame.sprite.Sprite):
 
     def __init__(self, position):
         super(Mob, self).__init__()
-
+        
         self.image = pygame.Surface((90, 53))
         self.image = pg.image.load("png\mob.png")
-        self.rect = self.image.get_rect(topleft=position)
+        self.orig_image = self.image
+        self.rect = self.image.get_rect(center=position)
         self.position = pygame.math.Vector2(position)
         self.speed = 2
+
 
     def attack(self):
         player_position = player.rect.topleft
@@ -158,7 +160,15 @@ class Mob(pygame.sprite.Sprite):
         self.rect.topleft = self.position
 
     def update(self):
+        self.rotate()
         self.attack()
+        
+    
+    def rotate(self):
+        direction = (640,360) - self.position #change value in first () to change mob looking direction
+        radius, angle = direction.as_polar()
+        self.image = pg.transform.rotate(self.orig_image, -angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
 
 
 
@@ -166,18 +176,18 @@ class Player(pg.sprite.Sprite):
 
     def __init__(self, pos):
         super().__init__()
-        self.image = pg.Surface((50, 30))
+        self.image = pg.Surface([50, 30])
         self.image = pg.image.load("PNG\chartest2.png")
         
         self.orig_image = self.image  # Store a reference to the original.
         self.rect = self.image.get_rect(center=pos)
         self.pos = Vector2(pos)
+        self.walls = None
 
 
     def update(self):
         self.rotate()
 
-    
     def rotate(self):
         # The vector to the target (the mouse position).
         direction = pg.mouse.get_pos() - self.pos
@@ -210,7 +220,7 @@ class Bullet(pg.sprite.Sprite):
         self.speedy = 10
 
     def update(self):
-        self.rect.x += self.speedy #what direction it shoots
+        self.rect.y += self.speedy #what direction it shoots
 
         if self.rect.bottom < 0:
             self.kill()
@@ -223,6 +233,9 @@ class Bullet(pg.sprite.Sprite):
 
         #elif self.rect.right < 0:
         #    self.kill()
+    
+    def set_target(self, pos):
+        self.target = pygame.Vector2(pos)
 
 
 
@@ -298,13 +311,10 @@ all_sprite_list.add(wall)
 
 
 
+my1list = [(1280, 720), (0,0), (1280, 0), (0, 720),(640, 720) ,(640, 720), (0, 360), (0, 360) ]
 
 for i in range(4):
-
-    my1list = [(1280, 720), (0,0), (1280, 0), (0, 720),(640, 720) ,(640, 720), (0, 360), (0, 360) ]
-    
     m = Mob(random.choice(my1list))
-   
     all_sprite_list.add(m)
     mobs.add(m)
 
@@ -326,7 +336,7 @@ all_sprite_list.add(player)
 pg.init()
 
 def engine():   #main game loop 
- 
+    countT = 0
     done = False  
 
 
@@ -336,9 +346,9 @@ def engine():   #main game loop
             if event.type == pg.QUIT:
                 done = True
             
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                for ship in group.sprites():
-                    ship.set_target(pygame.mouse.get_pos())
+            #if event.type == pygame.MOUSEBUTTONDOWN:
+             #   for bullets in all_sprite_list():
+             #       bullet.set_target(pygame.mouse.get_pos())
 
 
             if event.type == pg.KEYDOWN:
@@ -357,6 +367,39 @@ def engine():   #main game loop
         #m.update(player)
 
         all_sprite_list.update()
+
+        bullethit = pygame.sprite.groupcollide(mobs, bullets, True, True)
+
+        for bullethi in bullethit:
+            #sound goes here for death of mob or bullet hit sound
+            #score += 1
+            m = Mob(random.choice(my1list))
+            all_sprite_list.add(m)
+            mobs.add(m)
+
+
+        BarnDead = pg.sprite.spritecollide(player, mobs, True)
+
+
+        if BarnDead:
+            #music goes here
+            countT += 1
+            if countT == 4:   # health = 4
+                done = True
+                pg.quit
+                quit
+            else:
+                pass
+
+            m = Mob(random.choice(my1list))
+            all_sprite_list.add(m)
+            mobs.add(m)
+            #time.sleep(1.2)
+            #outro
+            pg.quit
+            quit
+
+
         all_sprite_list.draw(screen)
         screen.blit(player.image, player.rect)
 
