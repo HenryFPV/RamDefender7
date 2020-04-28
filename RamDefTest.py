@@ -189,7 +189,7 @@ class Player(pg.sprite.Sprite):
     def shoot(self):
         music('MP3\GunShotSound-v3.wav')
         playSound()
-        bullet = Bullet(player.pos) #where it comes out
+        bullet = Bullet(pg.mouse.get_pos()) #where it comes out
         all_sprite_list.add(bullet)
         bullets.add(bullet)
         
