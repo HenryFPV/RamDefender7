@@ -53,7 +53,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = pygame.Surface((32, 32))
         self.image.fill(pygame.Color('blue'))
-        self.rect = self.image.get_rect(topleft=position)
+        self.rect = self.image.get_rect()
 
         self.position = pygame.math.Vector2(position)
         self.velocity = pygame.math.Vector2(0, 0)

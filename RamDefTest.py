@@ -105,7 +105,7 @@ def intro():
         pg.display.update()
         clock.tick(0)
 
-
+'''#
 
 class Mob(pg.sprite.Sprite):
 
@@ -136,61 +136,46 @@ class Mob(pg.sprite.Sprite):
             self.rect.y = random.randrange(20, 710)
             self.speedy = random.randrange(-7, -5)
 
+'''#
+
+class Mob(pygame.sprite.Sprite):
+
+    def __init__(self, position):
+        super(Mob, self).__init__()
+
+        self.image = pygame.Surface((90, 53))
+        self.image = pg.image.load("png\mob.png")
+        self.rect = self.image.get_rect(topleft=position)
+        self.position = pygame.math.Vector2(position)
+        self.speed = 2
+
+    def attack(self):
+        player_position = player.rect.topleft
+        direction = player_position - self.position
+        velocity = direction.normalize() * self.speed
+
+        self.position += velocity
+        self.rect.topleft = self.position
+
+    def update(self):
+        self.attack()
 
 
 
 class Player(pg.sprite.Sprite):
 
-    def __init__(self, pos, x, y ):##############
-
+    def __init__(self, pos):
         super().__init__()
-
-        self.image = pg.Surface([56, 79])
-        self.image = pg.image.load("png\chartest2.png")
-        self.orig_image = self.image
-
-
-        self.rect = self.image.get_rect()
-
-        self.rect.y = y
-        self.rect.x = x
-        self.change_x = 0
-        self.change_y = 0
-        self.walls = None
+        self.image = pg.Surface((50, 30))
+        self.image = pg.image.load("PNG\chartest2.png")
+        
+        self.orig_image = self.image  # Store a reference to the original.
+        self.rect = self.image.get_rect(center=pos)
         self.pos = Vector2(pos)
 
-    def changespeed(self, x, y):
-
-        self.change_x += x
-        self.change_y += y
 
     def update(self):
         self.rotate()
-
-        self.rect.x += self.change_x
-
-        block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
-
-        for block in block_hit_list:
-
-            if self.change_x > 0:
-                self.rect.right = block.rect.left
-
-            else:
-                self.rect.left = block.rect.right
-
-        self.rect.y += self.change_y
-
-        block_hit_list = pg.sprite.spritecollide(self, self.walls, False)
-
-        for block in block_hit_list:
-
-            if self.change_y > 0:
-                self.rect.bottom = block.rect.top
-
-            else:
-                self.rect.top = block.rect.bottom
-
 
     
     def rotate(self):
@@ -230,6 +215,15 @@ class Bullet(pg.sprite.Sprite):
         if self.rect.bottom < 0:
             self.kill()
 
+        #elif self.rect.top < 0:
+        #    self.kill()
+
+        #elif self.rect.left < 0:
+        #    self.kill()
+
+        #elif self.rect.right < 0:
+        #    self.kill()
+
 
 
 
@@ -262,7 +256,7 @@ all_sprite_list = pg.sprite.Group()
 wall_list = pg.sprite.Group()
 bullets = pg.sprite.Group()
 mobs = pg.sprite.Group()
-
+players = pg.sprite.Group()
 
 
 
@@ -290,19 +284,39 @@ wall_list.add(wall)
 all_sprite_list.add(wall)
 
 
-for i in range(10):
-    m = Mob()
+
+
+
+
+#mobs spawning
+#ElDorito = [(1280, 720), (0,0), (1280, 0), (0, 720)]
+
+#maxmobs = 4
+#sampled_list = random.sample(ElDorito, maxmobs)
+
+#random.choice(ElDorito,)
+
+
+
+
+for i in range(4):
+
+    my1list = [(1280, 720), (0,0), (1280, 0), (0, 720),(640, 720) ,(640, 720), (0, 360), (0, 360) ]
+    
+    m = Mob(random.choice(my1list))
+   
     all_sprite_list.add(m)
     mobs.add(m)
 
 #player image and added to sprite list to be on screen
-player = Player((640, 360),640, 360 ) #start position
-
-
-player.walls = wall_list
+player = Player((640,360)) #start position
 all_sprite_list.add(player)
 
 
+
+
+
+#```
 
 
 
@@ -321,23 +335,15 @@ def engine():   #main game loop
         for event in pg.event.get():     #ends game, can insert pg.QUIT() anywhere to end it.
             if event.type == pg.QUIT:
                 done = True
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for ship in group.sprites():
+                    ship.set_target(pygame.mouse.get_pos())
 
 
-            elif event.type == pg.KEYDOWN:
+            if event.type == pg.KEYDOWN:
 
-                if event.key == pg.K_LEFT:
-                    player.changespeed(-5, 0)
-
-                if event.key == pg.K_RIGHT:
-                    player.changespeed(5, 0)
-
-                if event.key == pg.K_UP:
-                    player.changespeed(0, -5)
-
-                if event.key == pg.K_DOWN:
-                    player.changespeed(0, 5)
-
-                elif event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE:
 
                     music('MP3\GunShotSound-v3.wav')
                     playSound()
@@ -345,22 +351,14 @@ def engine():   #main game loop
                     player.shoot()
 
 
-            elif event.type == pg.KEYUP:
+            #elif event.type == pg.KEYUP:
 
-                if event.key == pg.K_LEFT:
-                    player.changespeed(5, 0)
-
-                if event.key == pg.K_RIGHT:
-                    player.changespeed(-5, 0)
-
-                if event.key == pg.K_UP:
-                    player.changespeed(0, 5)
-
-                if event.key == pg.K_DOWN:
-                    player.changespeed(0, -5)
+        #player.update()
+        #m.update(player)
 
         all_sprite_list.update()
         all_sprite_list.draw(screen)
+        screen.blit(player.image, player.rect)
 
         pg.display.flip()
 
