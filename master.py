@@ -66,11 +66,11 @@ def button(msg, x, y, w, h, iv, av, action=None):
 
         if click[0] == 1 and action != None:
             if action == "quit":
-                musica('MP3\key1.wav')
+                musica('MP3\count.wav')
                 music_on()
                 time.sleep(0.5)
 
-                musica('MP3\end.wav')
+                musica('MP3\count.wav')
                 music_on()
                 time.sleep(2)
 
@@ -78,13 +78,13 @@ def button(msg, x, y, w, h, iv, av, action=None):
                 quit
 
             elif action == "more":
-                musica('MP3\key1.wav')
+                musica('MP3\count.wav')
                 music_on()
 
                 intro()
 
             elif action == "edasi":
-                musica('MP3\key1.wav')
+                musica('MP3\count.wav')
                 music_on()
 
                 keskmine()
@@ -357,8 +357,8 @@ bullets = pg.sprite.Group()
 wall_list = pg.sprite.Group()
 
 #background image when playing
-bg = Background("png\sgtest.png", [0, 0])
-bg.image = pg.image.load("png\sgtest.png")
+bg = Background("png\Yground.png", [0, 0])
+bg.image = pg.image.load("png\Yground.png")
 all_sprite_list.add(bg)
 
 #init player sprite
