@@ -13,7 +13,7 @@ pg.init()
 #loads images for screens
 pg.display.set_caption('Defence')
 introt = pg.image.load("png/intro.png")
-loppt = pg.image.load("png/sgtest.png")
+loppt = pg.image.load("png/loss2.png")
 ladu = pg.image.load("png/sgtest.png")
 voitekr = pg.image.load("png/sgtest.png")
 
@@ -197,7 +197,7 @@ def winn():   #win screen
 
 def outro(): #death screen
     outro = True
-    musica('MP3\literaldeath.wav')
+    musica('sound\lossSound.mp3')
     music_on()
     
     while outro:
@@ -252,7 +252,7 @@ class Player(pg.sprite.Sprite):
         
         super().__init__()
 
-        self.image = pg.Surface([56, 79])
+        self.image = pg.Surface([53, 67])
         self.rect = self.image.get_rect()
         self.rect.y = y
         self.rect.x = x
@@ -311,7 +311,7 @@ class Bullet(pg.sprite.Sprite): #creates bullet class
     def update(self):
         self.rect.x += self.speedy
 
-        if self.rect.bottom < 0: #kills if gets out of bounds
+        if self.rect.centerx > 1280: #kills if gets out of bounds
             self.kill()
 
 
@@ -368,8 +368,8 @@ bg.image = pg.image.load("png\Yground.png")
 all_sprite_list.add(bg)
 
 #init player sprite
-player = Player(10, 150)
-player.image = pg.image.load("png\chartest2.png")
+player = Player(640, 340)
+player.image = pg.image.load("png\opiumMike.png")
 player.walls = wall_list
 
 #wall boundaries
