@@ -186,16 +186,53 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.rect.center)
 
 
-    def shoot(self):
-        music('MP3\GunShotSound-v3.wav')
-        playSound()
-        bullet = Bullet(pg.mouse.get_pos()) #where it comes out
-        all_sprite_list.add(bullet)
-        bullets.add(bullet)
+    #def shoot(self):
+        #music('MP3\GunShotSound-v3.wav')
+        #playSound()
+        #bullet = Bullet(pg.mouse.get_pos()) #where it comes out
+        #all_sprite_list.add(bullet)
+        #bullets.add(bullet)
         
-
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, start_x, start_y, dest_x, dest_y):
+        """ Constructor.
+        It takes in the starting x and y location.
+        It also takes in the destination x and y position.
+        """
+ 
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+ 
+        # Set up the image for the bullet
+        self.image = pygame.Surface([4, 10])
+        self.image.fill(BLACK)
+ 
+        self.rect = self.image.get_rect()
+ 
+        # Move the bullet to our starting location
+        self.rect.x = start_x
+        self.rect.y = start_y
+ 
+        # Because rect.x and rect.y are automatically converted
+        # to integers, we need to create different variables that
+        # store the location as floating point numbers. Integers
+        # are not accurate enough for aiming.
+        self.floating_point_x = start_x
+        self.floating_point_y = start_y
+ 
+        # Calculation the angle in radians between the start points
+        # and end points. This is the angle the bullet will travel.
+        x_diff = dest_x - start_x
+        y_diff = dest_y - start_y
+        angle = math.atan2(y_diff, x_diff)
+ 
+        # Taking into account the angle, calculate our change_x
+        # and change_y. Velocity is how fast the bullet travels.
+        velocity = 5
+        self.change_x = math.cos(angle) * velocity
+        self.change_y = math.sin(angle) * velocity
     
-
+'''
 class Bullet(pg.sprite.Sprite):
 
     def __init__(self,position):
@@ -245,7 +282,7 @@ class Bullet(pg.sprite.Sprite):
     def set_target(self, pos):
         self.target = pygame.Vector2(pos)
 
-
+'''
 
 
 class Background(pg.sprite.Sprite):
@@ -275,7 +312,8 @@ class Wall(pg.sprite.Sprite):
 #sprite lists
 all_sprite_list = pg.sprite.Group()
 wall_list = pg.sprite.Group()
-bullets = pg.sprite.Group()
+#bullets = pg.sprite.Group()
+bullet_list = pg.sprite.Group()
 mobs = pg.sprite.Group()
 players = pg.sprite.Group()
 
@@ -347,7 +385,8 @@ all_sprite_list.add(player)
 #```
 
 
-
+player.rect.x = SCREEN_WIDTH / 2
+player.rect.y = SCREEN_HEIGHT / 2
 
 
 
@@ -370,15 +409,21 @@ def engine():   #main game loop
             if event.type == pg.QUIT:
                 done = True
             
-            #if event.type == pygame.MOUSEBUTTONDOWN:
-             #   for bullets in all_sprite_list():
-             #       bullet.set_target(pygame.mouse.get_pos())
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                mouse_x = pos[0]
+                mouse_y = pos[1]
+                bullet = Bullet(player.rect.x, player.rect.y, mouse_x, mouse_y)
+                all_sprite_list.add(bullet)
+                bullet_list.add(bullet)
 
 
-            if event.type == pg.KEYDOWN:
 
-                if event.key == pygame.K_SPACE:
-                    player.shoot()
+
+            #if event.type == pg.KEYDOWN:
+
+            #    if event.key == pygame.K_SPACE:
+            #        player.shoot()
 
 
             #elif event.type == pg.KEYUP:
@@ -388,15 +433,27 @@ def engine():   #main game loop
 
         all_sprite_list.update()
 
-        bullethit = pygame.sprite.groupcollide(mobs, bullets, True, True)
+        #bullethit = pygame.sprite.groupcollide(mobs, bullet, True, True)
 
-        for bullethi in bullethit:
+        #for bullethi in bullethit:
             #sound goes here for death of mob or bullet hit sound
             #score += 1
-            m = Mob(random.choice(mobRandSpawn))
-            all_sprite_list.add(m)
-            mobs.add(m)
+            #m = Mob(random.choice(mobRandSpawn))
+            #all_sprite_list.add(m)
+            #mobs.add(m)
 
+        #for bullet in bullet_list:
+            #block_hit_list = pygame.sprite.spritecollide(bullet, mobs, True)
+
+            #for mobs in block_hit_list:
+            #    bullet_list.remove(bullet)
+            #    all_sprite_list.remove(bullet)
+            #    score += 1
+            #    print(score)
+
+            #if bullet.rect.y < -10:
+            #    bullet_list.remove(bullet)
+            #    all_sprites_list.remove(bullet)
 
         BarnDead = pg.sprite.spritecollide(player, mobs, True)
 
