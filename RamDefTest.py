@@ -113,7 +113,7 @@ def outro():
     
     while outro:
         for event in pg.event.get():
-            if event.type == pg.QUIT:
+            if event.type == pg.quit:
                 pg.quit()
                 quit()
         screen.blit(endscreen, backgroundRect) #find endscreen image
@@ -187,10 +187,12 @@ class Player(pg.sprite.Sprite):
 
 
     def shoot(self):
-
-        bullet = Bullet(pg.mouse.get_pos()) #where it comes out
+        music('MP3\GunShotSound-v3.wav')
+        playSound()
+        bullet = Bullet(player.pos) #where it comes out
         all_sprite_list.add(bullet)
         bullets.add(bullet)
+        
 
     
 
@@ -206,16 +208,17 @@ class Bullet(pg.sprite.Sprite):
         self.position = pygame.math.Vector2(position)
         #self.rect.bottom = y
         #self.rect.centerx = x
-        self.speedy = 10
+        self.speed = 10
         #self.pos = Vector2(pos)
 
     def update(self):
         self.rotate()
+        self.trajectory()
         #self.rect.y += self.speedy #what direction it shoots
-
+        self.position + self.speed
         if self.rect.bottom < 0:
             self.kill()
-
+       
     def trajectory(self):
         mouse_position = pg.mouse.get_pos()
         direction = mouse_position - self.position
@@ -328,10 +331,10 @@ right1 = random.randint(0, 720)  # x = 1280 stays constant, 0-720 is var
 # X !> Y
 mobRandSpawn = [ (720, top1 ), (0, bottom1), (left1, 0), (right1, 1280) ]
 
-for i in range(25):
-    m = Mob(random.choice(mobRandSpawn))
-    all_sprite_list.add(m)
-    mobs.add(m)
+#for i in range(25):
+#    m = Mob(random.choice(mobRandSpawn))
+ #   all_sprite_list.add(m)
+ #   mobs.add(m)
 
 #player image and added to sprite list to be on screen
 player = Player((640,360)) #start position
@@ -375,10 +378,6 @@ def engine():   #main game loop
             if event.type == pg.KEYDOWN:
 
                 if event.key == pygame.K_SPACE:
-
-                    music('MP3\GunShotSound-v3.wav')
-                    playSound()
-
                     player.shoot()
 
 
