@@ -21,7 +21,7 @@ DARKRED         = (200, 0, 0)
   
 
 introBack = pg.image.load("PNG/intro.png")
-
+endscreen = pg.image.load("PNG/sgtest.png")
 
 SCREEN_WIDTH    = 1280
 SCREEN_HEIGHT   = 720
@@ -105,38 +105,29 @@ def intro():
         pg.display.update()
         clock.tick(0)
 
-'''#
 
-class Mob(pg.sprite.Sprite):
+def outro():
 
-    def __init__(self):
-        super(Mob, self).__init__()
+    outro = True
+    #music here
+    
+    while outro:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                quit()
+        screen.blit(endscreen, backgroundRect) #find endscreen image
 
-        self.image = pygame.Surface((90, 53))
-        self.image = pg.image.load("png\mob.png")
-        self.image = pg.transform.scale(self.image, [90, 53])
+        largeText = pg.font.Font('freesansbold.ttf', 15)
+        TextSurf, TextRect = text_objects0("Delta build d282.56.2", largeText)
+        TextRect.center = (1000, 25)
+        screen.blit(TextSurf, TextRect)
 
+        button("AAAAAAA", 540, 450, 200, 50, RED, DARKRED, "quit")
+        button("BBBBBBB", 540, 550, 200, 50, RED, DARKRED, "restart")
 
-
-        self.rect = self.image.get_rect()
-        #self.rect.x = 1280
-        #self.rect.y = 720
-        
-        
-        self.rect.x = random.randrange(1280, 1500)
-        self.rect.y = random.randrange(20, 720)        
-
-        self.speedx = random.randrange(-5, -2)
-
-    def update(self):
-        self.rect.x += self.speedx
-
-        if self.rect.top > self.rect.left < -60 or self.rect.right > SCREEN_WIDTH + 60:
-            self.rect.x = random.randrange(1200, 1280)
-            self.rect.y = random.randrange(20, 710)
-            self.speedy = random.randrange(-7, -5)
-
-'''#
+        pg.display.update()
+        clock.tick(0)    
 
 class Mob(pygame.sprite.Sprite):
 
@@ -149,7 +140,7 @@ class Mob(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=position)
         self.position = pygame.math.Vector2(position)
         self.speed = 2
-
+        
 
     def attack(self):
         player_position = player.rect.topleft
@@ -189,20 +180,15 @@ class Player(pg.sprite.Sprite):
         self.rotate()
 
     def rotate(self):
-        # The vector to the target (the mouse position).
         direction = pg.mouse.get_pos() - self.pos
-        # .as_polar gives you the polar coordinates of the vector,
-        # i.e. the radius (distance to the target) and the angle.
         radius, angle = direction.as_polar()
-        # Rotate the image by the negative angle (y-axis in pygame is flipped).
         self.image = pg.transform.rotate(self.orig_image, -angle)
-        # Create a new rect with the center of the old rect.
         self.rect = self.image.get_rect(center=self.rect.center)
-    
+
 
     def shoot(self):
 
-        bullet = Bullet(self.rect.centerx +30 , self.rect.bottom -53) #where it comes out
+        bullet = Bullet(pg.mouse.get_pos()) #where it comes out
         all_sprite_list.add(bullet)
         bullets.add(bullet)
 
@@ -210,20 +196,39 @@ class Player(pg.sprite.Sprite):
 
 class Bullet(pg.sprite.Sprite):
 
-    def __init__(self, x, y):
+    def __init__(self,position):
         pg.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((30, 30))
         self.image = pg.image.load("PNG\BULLET.png")
-        self.rect = self.image.get_rect()
-        self.rect.bottom = y
-        self.rect.centerx = x
+        #self.rect = self.image.get_rect()
+        self.orig_image = self.image
+        self.rect = self.image.get_rect(center=position)
+        self.position = pygame.math.Vector2(position)
+        #self.rect.bottom = y
+        #self.rect.centerx = x
         self.speedy = 10
+        #self.pos = Vector2(pos)
 
     def update(self):
-        self.rect.y += self.speedy #what direction it shoots
+        self.rotate()
+        #self.rect.y += self.speedy #what direction it shoots
 
         if self.rect.bottom < 0:
             self.kill()
+
+    def trajectory(self):
+        mouse_position = pg.mouse.get_pos()
+        direction = mouse_position - self.position
+        velocity = direction.normalize() * self.speed
+
+        self.position += velocity
+        self.rect.topleft = self.position
+
+    def rotate(self):
+        direction = pg.mouse.get_pos() - self.position
+        radius, angle = direction.as_polar()
+        self.image = pg.transform.rotate(self.orig_image, -angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
 
         #elif self.rect.top < 0:
         #    self.kill()
@@ -300,21 +305,31 @@ all_sprite_list.add(wall)
 
 
 
+#listTOP = [top1, top2]
+#listBOTTOM = [bottom1, bottom2]
+#listLEFT = [left1, left2]
+#listRIGHT = [right1, right2]
 
 #mobs spawning
 #ElDorito = [(1280, 720), (0,0), (1280, 0), (0, 720)]
 
+top1 = random.randint(0, 1280)     # y = 720 stays constant, 1280 is var 0 - 1280
+bottom1 = random.randint(0, 1280)      # y = 0 styas constant, 1280 is var 0-1280
+left1 = random.randint(0, 720)      # x = 0 stays constant, 720 is var 0 - 720 
+right1 = random.randint(0, 720)  # x = 1280 stays constant, 0-720 is var  
 #maxmobs = 4
 #sampled_list = random.sample(ElDorito, maxmobs)
 
 #random.choice(ElDorito,)
 
+#my1list = [(1280, 720), (0,0), (1280, 0), (0, 720),(640, 720) ,(640, 720), (0, 360), (0, 360) ]
+#top, bottom, left, right. all have x or y as one constant value at alltimes
 
+# X !> Y
+mobRandSpawn = [ (720, top1 ), (0, bottom1), (left1, 0), (right1, 1280) ]
 
-my1list = [(1280, 720), (0,0), (1280, 0), (0, 720),(640, 720) ,(640, 720), (0, 360), (0, 360) ]
-
-for i in range(4):
-    m = Mob(random.choice(my1list))
+for i in range(25):
+    m = Mob(random.choice(mobRandSpawn))
     all_sprite_list.add(m)
     mobs.add(m)
 
@@ -338,7 +353,13 @@ pg.init()
 def engine():   #main game loop 
     countT = 0
     done = False  
-
+    
+    
+    top1 = random.randint(0, 1280)     # y = 720 stays constant, 1280 is var 0 - 1280
+    bottom1 = random.randint(0, 1280)      # y = 0 styas constant, 1280 is var 0-1280
+    left1 = random.randint(0, 720)      # x = 0 stays constant, 720 is var 0 - 720 
+    right1 = random.randint(0, 720)  # x = 1280 stays constant, 0-720 is var        
+    mobRandSpawn = [ (720, top1 ), (0, bottom1), (left1, 0), (right1, 1280) ]
 
     while not done:    
 
@@ -373,7 +394,7 @@ def engine():   #main game loop
         for bullethi in bullethit:
             #sound goes here for death of mob or bullet hit sound
             #score += 1
-            m = Mob(random.choice(my1list))
+            m = Mob(random.choice(mobRandSpawn))
             all_sprite_list.add(m)
             mobs.add(m)
 
@@ -386,14 +407,16 @@ def engine():   #main game loop
             countT += 1
             if countT == 4:   # health = 4
                 done = True
-                pg.quit
-                quit
+                outro()
+            
             else:
+                m = Mob(random.choice(mobRandSpawn))
+                all_sprite_list.add(m)
+                mobs.add(m)
                 pass
+            
 
-            m = Mob(random.choice(my1list))
-            all_sprite_list.add(m)
-            mobs.add(m)
+           
             #time.sleep(1.2)
             #outro
             pg.quit
