@@ -213,9 +213,9 @@ class Bullet(pg.sprite.Sprite):
 
     def update(self):
         self.rotate()
-        self.trajectory()
+        #self.trajectory()
         #self.rect.y += self.speedy #what direction it shoots
-        self.position + self.speed
+        #self.position + self.speed
         if self.rect.bottom < 0:
             self.kill()
        
