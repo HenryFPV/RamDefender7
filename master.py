@@ -213,7 +213,13 @@ def outro(): #death screen
         TextRect.center = (600, 585)
         screen.blit(TextSurf, TextRect)
 
-        button("GET WELL!", 350, 400, 200, 50, RED, DARKRED, "quit")
+        button("GET WELL!", 540, 600, 200, 50, RED, DARKRED, "quit")
+
+
+        largeText = pg.font.Font('freesansbold.ttf', 30)
+        TextSurf, TextRect = text_objects4("You cant restart what you couldnt finish!", largeText)
+        TextRect.center = (600, 340)
+        screen.blit(TextSurf, TextRect)
 
         pg.display.update()
 
