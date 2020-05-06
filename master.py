@@ -16,6 +16,7 @@ introt = pg.image.load("png/intro.png")
 loppt = pg.image.load("png/loss2.png")
 ladu = pg.image.load("png/sgtest.png")
 voitekr = pg.image.load("png/sgtest.png")
+welcomescr = pg.image.load("png/welcomera.jpg")
 
 backgroundRect = introt.get_rect()
 
@@ -54,6 +55,10 @@ def text_objects2(text, font):
 
 def text_objects4(text, font):
     textSurface = font.render(text, True, BLUE)
+    return textSurface, textSurface.get_rect()
+
+def text_objects3(text, font):
+    textSurface = font.render(text, True, DARKRED)
     return textSurface, textSurface.get_rect()
 
 #defines buttons and their actions
@@ -97,6 +102,31 @@ def button(msg, x, y, w, h, iv, av, action=None):
         textRect.center = ((x + (w / 2)), (y + (h / 2)))
 
         screen.blit(textSurf, textRect)
+
+def welcome():
+    welcome = True
+
+    musica('MP3\welcome1.wav')
+    music_on()
+
+    while welcome:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                quit
+
+        screen.blit(welcomescr, backgroundRect)
+
+        largeText = pg.font.Font('freesansbold.ttf', 80)
+        TextSurf, TextRect = text_objects3("welcome", largeText)
+        TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT - 100))
+        screen.blit(TextSurf, TextRect)
+
+        pg.display.update()
+        clock.tick(0)
+        time.sleep(2.5)
+        intro()
+
 
 
 def intro():   #intro screen
@@ -483,5 +513,5 @@ def engine():
             winn()
             
 
-intro()
+welcome()
 pg.quit()
