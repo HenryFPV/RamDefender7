@@ -15,7 +15,7 @@ pg.display.set_caption('Defence')
 introt = pg.image.load("png/intro.png")
 loppt = pg.image.load("png/loss2.png")
 ladu = pg.image.load("png/sgtest.png")
-voitekr = pg.image.load("png/sgtest.png")
+voitekr = pg.image.load("png/win01.png")
 welcomescr = pg.image.load("png/welcomera.jpg")
 
 backgroundRect = introt.get_rect()
@@ -206,7 +206,7 @@ def winn():   #win screen
             if event.type == pg.QUIT:
                 pg.quit()
                 quit
-
+        
         screen.blit(voitekr, backgroundRect)
 
         largeText = pg.font.Font('freesansbold.ttf', 70)
@@ -239,7 +239,7 @@ def outro(): #death screen
         screen.blit(loppt, backgroundRect)
 
         largeText = pg.font.Font('freesansbold.ttf', 15)
-        TextSurf, TextRect = text_objects4("Delta ehitis d282.56.2", largeText)
+        TextSurf, TextRect = text_objects4("Delta build d282.56.2", largeText)
         TextRect.center = (600, 585)
         screen.blit(TextSurf, TextRect)
 
