@@ -12,7 +12,7 @@ pg.init()
 
 #loads images for screens
 pg.display.set_caption('Defence')
-introt = pg.image.load("png/intro.png")
+introt = pg.image.load("png/intro2.png")
 loppt = pg.image.load("png/loss2.png")
 ladu = pg.image.load("png/sgtest.png")
 voitekr = pg.image.load("png/win01.png")
